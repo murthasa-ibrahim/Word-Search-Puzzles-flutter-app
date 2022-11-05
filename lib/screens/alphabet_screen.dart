@@ -27,7 +27,7 @@ class AlphabetScreen extends StatelessWidget {
                   physics:const NeverScrollableScrollPhysics(),
                   itemCount: initialController.gridCount,
                   gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: initialController.rowValue,
+                      crossAxisCount: initialController.columnValue,
                       crossAxisSpacing: 10,
                       mainAxisSpacing: 10),
                   itemBuilder: (context, index) {
@@ -76,7 +76,7 @@ class LetterBox extends StatelessWidget {
             ),
           ),
         ),
-        
+
       ),
     );
   }
