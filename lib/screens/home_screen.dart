@@ -30,29 +30,38 @@ class _HomeScreenState extends State<HomeScreen> {
         child: SafeArea(
           child: ListView(
             children: [
-              const Text(
-                'Search for a Word',
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Search for a Word',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 27,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  IconButton(onPressed:() => homeProvider.restart(context), icon:const  Icon(Icons.restore_rounded,size: 30,color: Colors.white,))
+                ],
               ),
               Padding(
                   padding: const EdgeInsets.symmetric(vertical: 20),
                   child: TextField(
+                    style: const TextStyle(color: Colors.white),
                     controller: homeProvider.searchController,
                     decoration: InputDecoration(
                         hintText: 'search.....',
-                        hintStyle: const TextStyle(color: Colors.black),
+                        
+                        hintStyle: const TextStyle(color: Colors.white),
                         suffixIcon: IconButton(
                             onPressed: () {
                               homeProvider.searchForWord(context);
                             },
                             icon: const Icon(
                               Icons.search,
-                              color: Colors.black,
+                              color: Colors.white,
                             )),
-                        fillColor: Colors.white,
+                        fillColor: Colors.black,
                         filled: true,
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16))),
@@ -84,13 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 },
               ),
-              const SizedBox(height: 20,),
-              ElevatedButton(
-                onPressed: (){
-                  homeProvider.restart(context);
-                },
-                style: ElevatedButton.styleFrom(primary: Colors.purple),
-               child: const Icon(Icons.restart_alt_rounded,size: 30,))
+            const SizedBox(height: 20,)
             ],
           ),
         ),

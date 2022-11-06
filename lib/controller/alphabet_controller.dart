@@ -15,7 +15,7 @@ class AlaphabetProvider extends ChangeNotifier {
       letterFormKey.currentState!.save();
       log(context.read<InitialScreenProvider>().letterList.toString());
       Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => const HomeScreen()));
+          .pushReplacement(MaterialPageRoute(builder: (context) => const HomeScreen()));
     }
   }
 

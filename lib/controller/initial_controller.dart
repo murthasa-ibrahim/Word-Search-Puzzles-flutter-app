@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 
 import 'package:flutter/material.dart';
 
@@ -27,7 +27,8 @@ class InitialScreenProvider extends ChangeNotifier {
       gridCount = rowValue * columnValue;
       letterList = List.generate(
           rowValue, (i) => List.filled(columnValue, '', growable: false));
-
+      rowsController.clear();
+      columnController.clear();
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const AlphabetScreen()));
     }

@@ -31,19 +31,25 @@ class InitialScreen extends StatelessWidget {
                 TextFormField(
                   validator: (value) => controller.validation(value),
                   controller:controller.rowsController ,
+                  textInputAction: TextInputAction.next,
+                  keyboardType: TextInputType.number,
+                  maxLength: 1,
                   decoration: const InputDecoration(
                       filled: true,
                       fillColor: Colors.white,
                       hintText: 'How many rows',
                       border: OutlineInputBorder()),
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
+                // const SizedBox(
+                //   height: 10,
+                // ),
                 TextFormField(
                   validator: (value) => controller.validation(value),
                   controller: controller.columnController,
-                  decoration: const InputDecoration(
+                  maxLength: 1,
+                  textInputAction: TextInputAction.next,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(    
                       filled: true,
                       fillColor: Colors.white,
                       hintText: 'How many columns',

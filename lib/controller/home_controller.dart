@@ -8,11 +8,13 @@ import '../screens/initial_screen.dart';
 
 class HomeProvider extends ChangeNotifier {
   List boolList = [];
-   void onInit(BuildContext context){
-      final ctr = context.read<InitialScreenProvider>();
-       boolList = List.generate(ctr.rowValue,
+   int flag = 0;
+  void onInit(BuildContext context) {
+    final ctr = context.read<InitialScreenProvider>();
+    boolList = List.generate(ctr.rowValue,
         (index) => List.filled(ctr.columnValue, false, growable: false));
-   }
+  }
+
   InitialScreenProvider ctr = InitialScreenProvider();
   final searchController = TextEditingController();
   String word = '';
@@ -38,15 +40,31 @@ class HomeProvider extends ChangeNotifier {
   void searchForWord(BuildContext context) {
     boolList = List.generate(ctr.rowValue,
         (index) => List.filled(ctr.columnValue, false, growable: false));
+    notifyListeners();
     ctr = context.read<InitialScreenProvider>();
     final c = ctr.columnValue;
     final r = ctr.rowValue;
     word = searchController.text;
-    for (int row = 0; row < r; row++) {
-      for (int colm = 0; colm < c; colm++) {
-        if (ctr.letterList[row][colm] == word[0] &&
-            searchFromCell(row, colm)) {}
+    searchController.clear();
+    if (word.isNotEmpty) {
+     
+      for (int row = 0; row < r; row++) {
+        for (int colm = 0; colm < c; colm++) {
+          if (ctr.letterList[row][colm] == word[0] &&
+              searchFromCell(row, colm)) {
+            log('word found');
+          } 
+        }
       }
+      log('ddddddddddddddd');
+      // if (flag== 1) {
+      //   log('sjfdksjfksd');
+      //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      //       backgroundColor: Colors.red,
+      //       content: Text('Word not found',
+      //           style: TextStyle(fontWeight: FontWeight.bold))));
+      //   log('not found');
+      // }
     }
   }
 
@@ -57,6 +75,7 @@ class HomeProvider extends ChangeNotifier {
   }
 
   bool searchHorizontaly(int row, int colm) {
+    log('search horizontally');
     int i;
     if (word.length > ctr.columnValue) {
       return false;
@@ -66,16 +85,26 @@ class HomeProvider extends ChangeNotifier {
       if (ctr.letterList[row][colm] != word[i]) {
         return false;
       }
-      boolList[row][colm] = true;
-      notifyListeners();
+      log('$row $colm');
+      if (i == word.length - 1) {
+        flag = 1;
+        while (i >= 0) {
+          log(i.toString());
+          log('true');
+          boolList[row][colm] = true;
+          notifyListeners();
+          i--;
+          colm--;
+        }
+        return true;
+      }
     }
-    if (i == word.length) {
-      return true;
-    }
+
     return false;
   }
 
   bool searchVertically(int row, int colm) {
+    log('search vertically');
     int i;
     if (word.length > ctr.rowValue) {
       return false;
@@ -85,18 +114,25 @@ class HomeProvider extends ChangeNotifier {
       if (ctr.letterList[row][colm] != word[i]) {
         return false;
       }
-      boolList[row][colm] = true;
-      notifyListeners();
+      if (i == word.length - 1) {
+        while (i >= 0) {
+            flag = 1;
+          boolList[row][colm] = true;
+          notifyListeners();
+          i--;
+          row--;
+        }
+        return true;
+      }
     }
 
     log(i.toString());
-    if (i == word.length) {
-      return true;
-    }
+
     return false;
   }
 
   bool searchDiagnally(int row, int colm) {
+    log('search diaganally');
     int i;
     if (word.length > ctr.columnValue || word.length > ctr.rowValue) {
       return false;
@@ -108,8 +144,17 @@ class HomeProvider extends ChangeNotifier {
       if (ctr.letterList[row][colm] != word[i]) {
         return false;
       }
-      boolList[row][colm] = true;
-      notifyListeners();
+      if (i == word.length - 1) {
+        while (i >= 0) {
+            flag = 1;
+          boolList[row][colm] = true;
+          notifyListeners();
+          i--;
+          row--;
+          colm--;
+        }
+        return true;
+      }
     }
 
     log(i.toString());
@@ -129,11 +174,21 @@ class HomeProvider extends ChangeNotifier {
         ),
         content: const Text(
           'Do you want to restart the game',
-          style:  TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('No')),
-          TextButton(onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const InitialScreen(),)), child: const Text('Yes'))
+          TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('No')),
+          TextButton(
+              onPressed: () {
+                searchController.clear();
+                Navigator.of(context).pop();
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) => const InitialScreen(),
+                ));
+              },
+              child: const Text('Yes'))
         ],
       ),
     );
